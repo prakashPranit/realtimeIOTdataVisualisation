@@ -1,0 +1,31 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+
+model TemperatureReadings {
+  id        Int     @id @default(autoincrement())
+  name      String
+  value     Int
+  published  DateTime  @updatedAt
+  time       String?
+  sensor    TempSensor    @relation(fields: [sensorId], references: [id])
+  sensorId  Int
+}
+
+model TempSensor {
+  id        Int     @id @default(autoincrement())
+  type     String
+  sensorFor   String?
+  fittedOn   String?
+  tempReadings TemperatureReadings[]
+  
+}
